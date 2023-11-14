@@ -1,7 +1,10 @@
 from django.contrib import admin
+from django.apps import apps
 
-from .models import Trousers, Size
+store_models = apps.get_app_config('store').get_models()
 
-# Register your models here.
-admin.site.register(Trousers)
-admin.site.register(Size)
+for model in store_models:
+    try:
+        admin.site.register(model)
+    except admin.sites.AlreadyRegistered:
+        pass
