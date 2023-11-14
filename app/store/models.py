@@ -9,6 +9,7 @@ class Size(models.Model):
 
 
 class Clothes(models.Model):
+    image = models.ImageField(upload_to='images/', null=True)
     name = models.TextField()
     vendore_code = models.BigIntegerField()
     price = models.IntegerField()
