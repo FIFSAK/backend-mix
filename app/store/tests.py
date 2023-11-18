@@ -11,3 +11,4 @@ try:
         print(f'Bucket Name: {bucket["Name"]}')
 except NoCredentialsError:
     print("Credentials not available")
+
