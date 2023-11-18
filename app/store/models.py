@@ -76,7 +76,7 @@ class OverallsJacketsRaincoatsCardigans(Clothes):
         return self.name
 
 
-class pantsuitsShortsSkirts(Clothes):
+class PantsuitsShortsSkirts(Clothes):
 
     def __str__(self):
         return self.name

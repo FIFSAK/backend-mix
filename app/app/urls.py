@@ -20,6 +20,6 @@ from store.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('trousers/', trousers_view),
+    path('clothes/<str:type>', clothes_view),
 
 ]
