@@ -1,4 +1,8 @@
+import boto3
 from django.db import models
+from django.contrib import admin
+
+from app import settings
 
 
 class Size(models.Model):
@@ -16,9 +20,25 @@ class Clothes(models.Model):
     count = models.IntegerField()
     sizes = models.ManyToManyField(Size)
 
+    def delete(self, *args, **kwargs):
+        # Connect to S3
+        s3 = boto3.client('s3',
+                          aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                          aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
+
+        # Delete the file from S3
+        if self.image:
+            s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=self.image.name)
+        super(Clothes, self).delete(*args, **kwargs)
+
     class Meta:
         abstract = True
 
+
+class ClothesAdmin(admin.ModelAdmin):
+    def delete_queryset(self, request, queryset):
+        for obj in queryset:
+            obj.delete()
 
 class Trousers(Clothes):
 
