@@ -32,3 +32,4 @@ def clothes_view(request, type):
     data = serialize('json', object_query_set)
     data = json.loads(data)
     return JsonResponse(data, safe=False)
+
