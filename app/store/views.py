@@ -1,10 +1,11 @@
 import json
 from django.core.serializers import serialize
 from django.http import JsonResponse, HttpResponse
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.exceptions import NotFound
 
 from .models import *
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 from .serializers import TrousersSerializer
 
 
@@ -60,5 +61,10 @@ class ClothesViewSet(viewsets.ReadOnlyModelViewSet):
         return model.objects.all()
 
     serializer_class = TrousersSerializer
+
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['name', '=vendore_code', '=sizes']
+    ordering_fields = ['price']
+
 
 
