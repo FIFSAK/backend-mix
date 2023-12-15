@@ -60,4 +60,7 @@ class UserView(viewsets.ReadOnlyModelViewSet):
 
     serializer_class = UserSerializer
 
+# class CartItemViewSet(viewsets.ModelViewSet):
+    
+
 
