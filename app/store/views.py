@@ -63,7 +63,7 @@ class ClothesViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = TrousersSerializer
 
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['name', '=vendore_code', '=sizes']
+    search_fields = ['name', '=vendor_code', '=sizes__size']
     ordering_fields = ['price']
 
 
