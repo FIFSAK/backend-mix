@@ -22,6 +22,7 @@ from store.views import *
 
 router = DefaultRouter()
 router.register(r'clothes', ClothesViewSet, basename='clothes')
+router.register(r'users', UserView, basename='users')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

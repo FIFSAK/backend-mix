@@ -1,9 +1,25 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from store.models import Trousers
+from store.models import Clothes
 
+class ClothesSerializer(serializers.ModelSerializer):
+    type_category = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='category_name'
+    )
+    sizes = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='size'
+    )
 
-class TrousersSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Trousers
+        model = Clothes
+        fields = '__all__'
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
         fields = '__all__'

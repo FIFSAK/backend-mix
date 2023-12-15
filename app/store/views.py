@@ -6,7 +6,8 @@ from rest_framework.exceptions import NotFound
 
 from .models import *
 from rest_framework import viewsets, filters
-from .serializers import TrousersSerializer
+from .serializers import ClothesSerializer, UserSerializer
+from django.contrib.auth.models import User
 
 
 # def clothes_view(request, type):
@@ -43,28 +44,20 @@ class ClothesViewSet(viewsets.ReadOnlyModelViewSet):
     """
     A simple ViewSet for viewing clothes.
     """
-    def get_queryset(self):
-        type_map = {
-            'Trousers': Trousers,
-            'TShirtsAndTops': TShirtsAndTops,
-            'Jacket': Jacket,
-            'ShirtsAndBlouses': ShirtsAndBlouses,
-            'Dresses': Dresses,
-            'OverallsJacketsRaincoatsCardigans': OverallsJacketsRaincoatsCardigans,
-            'PantsuitsShortsSkirts': PantsuitsShortsSkirts,
-            'Jeans': Jeans,
-            'Underwear': Underwear,
-        }
-        model = type_map.get(self.request.GET.get("type"))
-        if not model:
-            raise NotFound(detail="Incorrect type", code=404)
-        return model.objects.all()
 
-    serializer_class = TrousersSerializer
+    def get_queryset(self):
+
+        return Clothes.objects.all()
+
+    serializer_class = ClothesSerializer
 
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['name', '=vendor_code', '=sizes__size']
+    search_fields = ['name', '=vendor_code', '=sizes__size', 'type_category__category_name']
     ordering_fields = ['price']
 
+class UserView(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.all();
+
+    serializer_class = UserSerializer
 
 
