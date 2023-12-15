@@ -29,6 +29,7 @@ from rest_framework_simplejwt.views import (
 router = DefaultRouter()
 router.register(r'clothes', ClothesViewSet, basename='clothes')
 router.register(r'users', UserView, basename='users')
+router.register(r'cartItem', CartItemViewSet, basename='cartItem')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
