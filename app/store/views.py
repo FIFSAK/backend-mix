@@ -66,15 +66,7 @@ class CartItemViewSet(viewsets.ModelViewSet):
     serializer_class = CartItemSerializer
 
     def get_queryset(self):
-
         return CartItem.objects.filter(user=self.request.user)
-
-    def perform_destroy(self, instance):
-        if instance.quantity > 1:
-            instance.quantity -= 1
-            instance.save(update_fields=['quantity'])
-        else:
-            instance.delete()
 
     def create(self, *args, **kwargs):
         # Create a mutable copy of request.data
@@ -100,11 +92,14 @@ class CartItemViewSet(viewsets.ModelViewSet):
             serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         if instance.user != request.user:
             # Проверка, принадлежит ли объект корзины текущему пользователю
             raise PermissionDenied("Вы не можете удалить этот элемент корзины.")
-        self.perform_destroy(instance)
+        if instance.quantity > 1:
+            instance.quantity -= 1
+            instance.save(update_fields=['quantity'])
+        else:
+            instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
