@@ -10,20 +10,34 @@ def index(request):
     return render(request, "index.html")
 
 def search(request):
-    return render(request, "search.html")
+    category_name = request.GET.get('category', '')
+    if category_name:
+        type_category = Type.objects.filter(category_name=category_name).first()
+        if type_category:
+            clothes = Clothes.objects.filter(type_category=type_category)
+            print(clothes)
+        else:
+            clothes = Clothes.objects.none()
+    else:
+        clothes = Clothes.objects.all()
+
+    return render(request, "search.html", {'clothes': clothes})
 
 class ClothesViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    A simple ViewSet for viewing clothes.
-    """
-
-    queryset = Clothes.objects.all()
-
     serializer_class = ClothesSerializer
-
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['name', '=vendor_code', '=sizes__size', 'type_category__category_name']
     ordering_fields = ['price']
+
+    def get_queryset(self):
+        queryset = Clothes.objects.all()
+        category_name = self.request.query_params.get('category', None)
+        if category_name:
+            type_category = Type.objects.filter(category_name=category_name).first()
+            if type_category:
+                queryset = queryset.filter(type_category=type_category)
+        return queryset
+
 
 
 class UserView(viewsets.ReadOnlyModelViewSet):
