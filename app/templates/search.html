@@ -74,9 +74,9 @@
     </div>
 </main>
 
-<body>
 <!-- Фильтры -->
-<div class="container-fluid bg-color-light">
+{% verbatim %}
+<div class="container-fluid bg-color-light" id="clothes-cards">
     <div class="row border-bottom-gray">
         <div class="col-12 col-md-3 border-right-gray-md pb-4 border-bottom-gray-sm filters-container custom-filter-width">
             <div class="d-flex flex-column">
@@ -86,13 +86,20 @@
                     <input type="text" id="input-lower" class="input-lower"/>
                     <input type="text" id="input-upper" class="input-upper"/>
                 </div>
-
+                <div class="custom-checkboxes">
+                    <p class="border-bottom-gray py-2 my-2 color-dark-gray h-medium-font">Сортировать по</p>
+                    <label><input type="radio" name="sort" value="asc" @click="orderType('price')"> убыванию
+                        цены</label>
+                    <label><input type="radio" name="sort" value="dsc" @click="orderType('-price')"> возрастанию
+                        цены</label>
+                    <label><input type="radio" name="sort" value="" @click="orderType('')"> умолчанию</label>
+                </div>
                 <!-- Фильтр по размеру с множественным выбором -->
                 <div class="custom-checkboxes">
                     <p class="border-bottom-gray py-2 my-2 color-dark-gray h-medium-font">Size</p>
-                    <label><input type="checkbox" name="size" value="s"> S</label>
-                    <label><input type="checkbox" name="size" value="m"> M</label>
-                    <label><input type="checkbox" name="size" value="l"> L</label>
+                    <label v-for="size in ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']" :key="size">
+                        <input type="checkbox" :value="size" @change="updateSizes(size)"> {{ size }}
+                    </label>
                 </div>
 
                 <!-- Фильтр по бренду с чекбоксами -->
@@ -111,10 +118,10 @@
                 <label><input type="checkbox" name="color" value="blue"> Blue</label>
                 <label><input type="checkbox" name="color" value="green"> Green</label>
             </div>
-
         </div>
+        {% endverbatim %}
         {% verbatim %}
-        <div class="col-md-8" id="clothes-cards">
+        <div class="col-md-8">
             <div class="row custom-gutter-row">
                 <div class="col-md-4" v-for="cloth in clothes" :key="cloth.id">
                     <div class="product-card">

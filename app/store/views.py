@@ -15,7 +15,7 @@ def search(request):
 class ClothesViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ClothesSerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['name', '=vendor_code', '=sizes__size', 'type_category__category_name']
+    search_fields = ['name', '=vendor_code', 'sizes__size', '=type_category__category_name']
     ordering_fields = ['price']
 
     def get_queryset(self):
