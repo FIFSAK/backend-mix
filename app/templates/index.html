@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../static/css/style.css">
     <script src="https://kit.fontawesome.com/b9edfb7622.js" crossorigin="anonymous"></script>
     <link rel='shortcut icon' type='image/x-icon' href="../static/img/chordFlow.ico"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.4/vue.cjs.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.5/axios.js"></script>
     <title>Mix</title>
 </head>
@@ -75,16 +75,16 @@
 <!-- Category Section -->
 <section class="container my-4">
     <h2 class="text-center mb-3">Категории</h2>
-    <div class="row">
-        <div class="col-md-4 col-sm-6 mb-3">
+    <div class="row" id="category">
+        <div class="col-md-4 col-sm-6 mb-3" @click="loadCategory('Jeans')">
             <a href="search.html/?category=Jeans">
                 <div class="category-item">
-                    <img src="{% static 'img/icons8-jeans-50.png' %}" alt="jeans-icon" width="32" height="32">
+                    <img src="../static/img/icons8-jeans-50.png" alt="jeans-icon" width="32" height="32">
                     Джинсы
                 </div>
             </a>
         </div>
-        <div class="col-md-4 col-sm-6 mb-3">
+        <div class="col-md-4 col-sm-6 mb-3" @click="loadCategory('Pantsuits')">
             <a href="search.html/?category=Pantsuits">
                 <div class="category-item">
                     <img src="../static/img/icons8-blazer-32.png" alt="blazer-icon">
@@ -93,7 +93,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-4 col-sm-6 mb-3">
+        <div class="col-md-4 col-sm-6 mb-3" @click="loadCategory('Shorts')">
             <a href="search.html/?category=Shorts">
                 <div class="category-item">
                     <img src="../static/img/icons8-shorts-50.png" alt="shorts-icon" width="32" height="32">
@@ -101,7 +101,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-4 col-sm-6 mb-3">
+        <div class="col-md-4 col-sm-6 mb-3" @click="loadCategory('Skirts')">
             <a href="search.html/?category=Skirts">
                 <div class="category-item">
                     <img src="../static/img/icons8-skirt-50.png" alt="skirt-icon" width="32" height="32">
@@ -109,7 +109,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-4 col-sm-6 mb-3">
+        <div class="col-md-4 col-sm-6 mb-3" @click="loadCategory('Overalls')">
             <a href="search.html/?category=Overalls">
                 <div class="category-item">
                     <img src="../static/img/icons8-overalls-60.png" alt="over-icon" width="32" height="32">
@@ -117,7 +117,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-4 col-sm-6 mb-3">
+        <div class="col-md-4 col-sm-6 mb-3" @click="loadCategory('Blazer')">
             <a href="search.html/?category=Blazer">
                 <div class="category-item">
                     <img src="../static/img/icons8-blazer-32.png" alt="blazer-icon">
@@ -125,7 +125,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-4 col-sm-6 mb-3">
+        <div class="col-md-4 col-sm-6 mb-3" @click="loadCategory('Cloaks')">
             <a href="search.html/?category=Cloaks">
                 <div class="category-item">
                     <img src="../static/img/icons8-cloak-64.png" alt="cloak-icon" width="32" height="32">
@@ -133,7 +133,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-4 col-sm-6 mb-3">
+        <div class="col-md-4 col-sm-6 mb-3" @click="loadCategory('Cardigans')">
             <a href="search.html/?category=Cardigans">
                 <div class="category-item">
                     <img src="../static/img/icons8-cardigan-60.png" alt="cardigan-icon" width="32" height="32">
@@ -141,7 +141,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-4 col-sm-6 mb-3">
+        <div class="col-md-4 col-sm-6 mb-3" @click="loadCategory('Dress')">
             <a href="search.html/?category=Dress">
                 <div class="category-item">
                     <img src="../static/img/icons8-dress-32.png" alt="dress-icon">
@@ -149,7 +149,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-4 col-sm-6 mb-3">
+        <div class="col-md-4 col-sm-6 mb-3" @click="loadCategory('Ironed')">
             <a href="search.html/?category=Ironed">
                 <div class="category-item">
                     <img src="../static/img/icons8-ironed-64.png" alt="shirt-icon" width="32" height="32">
@@ -157,23 +157,23 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-4 col-sm-6 mb-3">
-            <a href="search.html/?category=Blazer">
+        <div class="col-md-4 col-sm-6 mb-3" @click="loadCategory('Pants')">
+            <a href="search.html/?category=Pants">
                 <div class="category-item">
                     <img src="../static/img/icons8-blazer-32.png" alt="blazer-icon">
                     Пиджаки
                 </div>
             </a>
         </div>
-        <div class="col-md-4 col-sm-6 mb-3">
-            <a href="search.html/?category=	T-Shirt">
+        <div class="col-md-4 col-sm-6 mb-3" @click="loadCategory('T-Shirt')">
+            <a href="search.html/?category=T-Shirt">
                 <div class="category-item">
                     <img src="../static/img/icons8-t-shirt-50.png" alt="t-shirt-icon" width="32" height="32">
                     Футболки и топы
                 </div>
             </a>
         </div>
-        <div class="col-md-4 col-sm-6 mb-3">
+        <div class="col-md-4 col-sm-6 mb-3" @click="loadCategory('Pants')">
             <a href="search.html/?category=Pants">
                 <div class="category-item">
                     <img src="../static/img/icons8-jeans-50.png" alt="jeans-icon" width="32" height="32">
@@ -193,17 +193,18 @@
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
+<script src="../static/category.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"-->
+<!--        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"-->
+<!--        crossorigin="anonymous"></script>-->
+<!--<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"-->
+<!--        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"-->
+<!--        crossorigin="anonymous"></script>-->
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"-->
+<!--        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"-->
+<!--        crossorigin="anonymous"></script>-->
 <!-- Flickity -->
-<script src="js/flickity.pkgd.min.js"></script>
+<!--<script src="js/flickity.pkgd.min.js"></script>-->
 </body>
 
 </html>

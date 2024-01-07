@@ -40,6 +40,9 @@ class Clothes(models.Model):
             s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=self.image.name)
         super(Clothes, self).delete(*args, **kwargs)
 
+    def __str__(self):
+        return str(self.name) + " " + str(self.type_category )
+
 
 class ClothesAdmin(admin.ModelAdmin):
     def delete_queryset(self, request, queryset):
