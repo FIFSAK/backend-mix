@@ -15,7 +15,8 @@
     <link rel="stylesheet" type="text/css" href="../static/css/search.css">
 
     <script src="https://kit.fontawesome.com/b9edfb7622.js" crossorigin="anonymous"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.5/axios.js"></script>
 
     <link rel='shortcut icon' type='image/x-icon' href="../static/img/chordFlow.ico"/>
 
@@ -77,7 +78,7 @@
 <!-- Фильтры -->
 <div class="container-fluid bg-color-light">
     <div class="row border-bottom-gray">
-        <div class="col-12 col-md-4 border-right-gray-md pb-4 border-bottom-gray-sm filters-container">
+        <div class="col-12 col-md-3 border-right-gray-md pb-4 border-bottom-gray-sm filters-container custom-filter-width">
             <div class="d-flex flex-column">
                 <!-- Фильтр по цене -->
                 <div id="price-slider" class="slider"></div>
@@ -112,25 +113,21 @@
             </div>
 
         </div>
-        <div class="col-md-8">
-            <div class="row"> <!-- Добавленный ряд для карточек товаров -->
-                <div class="col-md-4">
-                    <div class="container">
-                        {% for cloth in clothes %}
-                        <div class="product-card">
-                            <img src="{{ cloth.image.url }}" alt="{{ cloth.name }}" class="product-image">
-                            <div class="product-info">
-                                <h3 class="product-title">{{ cloth.name }}</h3>
-                                <!-- Other details like price, size etc -->
-                            </div>
+        {% verbatim %}
+        <div class="col-md-8" id="clothes-cards">
+            <div class="row custom-gutter-row">
+                <div class="col-md-4" v-for="cloth in clothes" :key="cloth.id">
+                    <div class="product-card">
+                        <img :src="cloth.image" :alt="cloth.name" class="product-image">
+                        <div class="product-info">
+                            <h3 class="product-title">{{ cloth.name }}</h3>
+                            <!-- Other details -->
                         </div>
-                        {% empty %}
-                        <p>No clothes found for this category.</p>
-                        {% endfor %}
                     </div>
                 </div>
             </div>
         </div>
+        {% endverbatim %}
 
     </div>
 
@@ -138,54 +135,13 @@
 </div>
 </div>
 
+<script src="../static/app.js"></script>
+
 <!-- JavaScript для ползунка цены -->
 <!-- Подключите noUiSlider -->
 <script src="https://cdn.jsdelivr.net/npm/nouislider/distribute/nouislider.min.js"></script>
 
-<script>
-    var priceSlider = document.getElementById('price-slider');
-    var inputLower = document.getElementById('input-lower');
-    var inputUpper = document.getElementById('input-upper');
-
-    noUiSlider.create(priceSlider, {
-        start: [450, 1000000],
-        connect: true,
-        range: {
-            'min': 0,
-            'max': 1000000
-        },
-        format: {
-            // Форматирование значения из ползунка в текстовый формат
-            to: function (value) {
-                return parseInt(value).toFixed(0);
-            },
-            // Форматирование значения из текстового поля обратно в формат числа
-            from: function (value) {
-                return parseInt(value);
-            }
-        }
-    });
-
-    // Обновление текстовых полей при изменении ползунков
-    priceSlider.noUiSlider.on('update', function (values, handle) {
-        var value = values[handle];
-        if (handle) {
-            inputUpper.value = value;
-        } else {
-            inputLower.value = value;
-        }
-    });
-
-    // Обработчик ввода в нижнее текстовое поле
-    inputLower.addEventListener('change', function () {
-        priceSlider.noUiSlider.set([this.value, null]);
-    });
-
-    // Обработчик ввода в верхнее текстовое поле
-    inputUpper.addEventListener('change', function () {
-        priceSlider.noUiSlider.set([null, this.value]);
-    });
-</script>
+<script src="../static/slider.js"></script>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -198,7 +154,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-
 </body>
 
 </html>

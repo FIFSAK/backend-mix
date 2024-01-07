@@ -10,18 +10,7 @@ def index(request):
     return render(request, "index.html")
 
 def search(request):
-    category_name = request.GET.get('category', '')
-    if category_name:
-        type_category = Type.objects.filter(category_name=category_name).first()
-        if type_category:
-            clothes = Clothes.objects.filter(type_category=type_category)
-            print(clothes)
-        else:
-            clothes = Clothes.objects.none()
-    else:
-        clothes = Clothes.objects.all()
-
-    return render(request, "search.html", {'clothes': clothes})
+    return render(request, "search.html")
 
 class ClothesViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ClothesSerializer
