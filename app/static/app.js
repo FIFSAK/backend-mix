@@ -4,8 +4,14 @@ new Vue({
         clothes: [],
         sortType: '',
         selectedSizes: [],
+        selectedBrand: [],
+        searchQuery: '',
     },
     methods: {
+        searchForm: function () {
+            console.log(this.searchQuery); // Now this will log the input from the search box
+            this.fetchData();
+        },
         orderType: function (sortValue) {
             console.log('Order type changed to:', sortValue);
             this.sortType = sortValue;
@@ -21,6 +27,16 @@ new Vue({
             }
             this.fetchData();
         },
+        updateBrand: function (brand) {
+            let bindex = this.selectedBrand.indexOf(brand);
+
+            if (bindex > -1) {
+                this.selectedBrand.splice(bindex, 1);
+            } else {
+                this.selectedBrand.push(brand);
+            }
+            this.fetchData();
+        },
         fetchData: function () {
             console.log('Fetching data with sort type:', this.sortType);
             const params = new URLSearchParams(window.location.search);
@@ -30,7 +46,13 @@ new Vue({
                 query += "&ordering=" + this.sortType;
             }
             if (this.selectedSizes.length) {
-                query += "&search=" + this.selectedSizes.join('&') + "&";
+                query += "&search=" + this.selectedSizes.join('&');
+            }
+            if (this.selectedBrand.length) {
+                query += "&search=" + this.selectedBrand.join('&');
+            }
+            if(this.searchQuery){
+                query += "&search=" + this.searchQuery;
             }
             const vm = this;
             console.log('Query URL:', query);
