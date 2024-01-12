@@ -3,9 +3,9 @@ new Vue({
     data: {
         clothes: [],
         sortType: '',
-        selectedSizes: [],
-        selectedBrand: [],
+        selectedFilter: [],
         searchQuery: '',
+        cartItem: '',
     },
     methods: {
         searchForm: function () {
@@ -17,54 +17,43 @@ new Vue({
             this.sortType = sortValue;
             this.fetchData();
         },
-        updateSizes: function (size) {
-            let index = this.selectedSizes.indexOf(size);
+        updateFilter: function (filter) {
+            let index = this.selectedFilter.indexOf(filter);
 
             if (index > -1) {
-                this.selectedSizes.splice(index, 1);
+                this.selectedFilter.splice(index, 1);
             } else {
-                this.selectedSizes.push(size);
+                this.selectedFilter.push(filter);
             }
             this.fetchData();
         },
-        updateBrand: function (brand) {
-            let bindex = this.selectedBrand.indexOf(brand);
 
-            if (bindex > -1) {
-                this.selectedBrand.splice(bindex, 1);
-            } else {
-                this.selectedBrand.push(brand);
-            }
-            this.fetchData();
-        },
         fetchData: function () {
-            console.log('Fetching data with sort type:', this.sortType);
             const params = new URLSearchParams(window.location.search);
-            let category = params.get('category') || ''; // Значение по умолчанию, если параметр отсутствует
+            let category = params.get('category') || '';
             let query = '/api/clothes/?category=' + category;
+
             if (this.sortType) {
                 query += "&ordering=" + this.sortType;
             }
-            if (this.selectedSizes.length) {
-                query += "&search=" + this.selectedSizes.join('&');
+            if (this.selectedFilter.length) {
+                query += "&search=" + this.selectedFilter.join('&');
             }
-            if (this.selectedBrand.length) {
-                query += "&search=" + this.selectedBrand.join('&');
-            }
-            if(this.searchQuery){
+
+            if (this.searchQuery) {
                 query += "&search=" + this.searchQuery;
             }
+
             const vm = this;
-            console.log('Query URL:', query);
 
             axios.get(query)
                 .then(function (response) {
-                    console.log('API Response:', response);
+                    // console.log('API Response:', response);
 
                     vm.clothes = response.data.results;
-                    for (i = 0; i < vm.clothes.length; i++) {
-                        console.log(vm.clothes[i].id)
-                    }
+                    // for (i = 0; i < vm.clothes.length; i++) {
+                    //     console.log(vm.clothes[i].id)
+                    // }
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -72,6 +61,6 @@ new Vue({
         }
     },
     created: function () {
-        this.fetchData(); // Вызываем fetchData при создании
+        this.fetchData();
     },
 });

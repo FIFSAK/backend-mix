@@ -99,7 +99,7 @@
                     <div class="custom-checkboxes">
                         <p class="border-bottom-gray py-2 my-2 color-dark-gray h-medium-font">Size</p>
                         <label v-for="size in ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']" :key="size">
-                            <input type="checkbox" :value="size" @change="updateSizes(size)"> {{ size }}
+                            <input type="checkbox" :value="size" @change="updateFilter(size)"> {{ size }}
                         </label>
                     </div>
 
@@ -107,7 +107,7 @@
                     <div class="custom-checkboxes">
                         <p class="border-bottom-gray py-2 my-2 color-dark-gray h-medium-font">Brand</p>
                         <label v-for="brand in ['Gucci', 'Prada', 'test']" :key="brand">
-                            <input type="checkbox" :value="brand" @change="updateBrand(brand)"> {{ brand }}
+                            <input type="checkbox" :value="brand" @change="updateFilter(brand)"> {{ brand }}
                         </label>
                     </div>
                 </div>
@@ -120,28 +120,26 @@
                     <label><input type="checkbox" name="color" value="green"> Green</label>
                 </div>
             </div>
-            {% endverbatim %}
-            {% verbatim %}
+
             <div class="col-md-8">
                 <div class="row custom-gutter-row">
                     <div class="col-md-4" v-for="cloth in clothes" :key="cloth.id">
-                        <div class="product-card">
-                            <img :src="cloth.image" :alt="cloth.name" class="product-image">
-                            <div class="product-info">
-                                <h3 class="product-title">{{ cloth.name }}</h3>
-                                <button class="btn btn-primary add-to-cart-btn">Добавить в корзину</button>
+                        <a :href="`http://127.0.0.1:8000/cart.html?id=${cloth.id}`">
+                            <div class="product-card">
+                                <img :src="cloth.image" :alt="cloth.name" class="product-image">
+                                <div class="product-info">
+                                    <h3 class="product-title">{{ cloth.name }}</h3>
+                                    <button class="btn btn-primary add-to-cart-btn">Добавить в корзину</button>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
-            {% endverbatim %}
-
         </div>
-        <!-- ... Остальная часть страницы ... -->
     </div>
 </div>
-
+{% endverbatim %}
 
 <script src="../static/app.js"></script>
 
@@ -162,6 +160,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-</body>
 
+
+</body>
 </html>

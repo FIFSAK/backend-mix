@@ -12,6 +12,9 @@ def index(request):
 def search(request):
     return render(request, "search.html")
 
+def itemcart(request):
+    return render(request, "cart.html")
+
 class ClothesViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ClothesSerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
@@ -21,12 +24,20 @@ class ClothesViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         queryset = Clothes.objects.all()
         category_name = self.request.query_params.get('category', None)
+        item_id = self.request.query_params.get('id', None)
+        if item_id:
+            queryset = queryset.filter(id=item_id)
+
         if category_name:
             type_category = Type.objects.filter(category_name=category_name).first()
+
+            # Check if type_category exists
             if type_category:
                 queryset = queryset.filter(type_category=type_category)
+            else:
+                # If no matching category, return an empty queryset
+                queryset = Clothes.objects.none()
         return queryset
-
 
 
 class UserView(viewsets.ReadOnlyModelViewSet):
