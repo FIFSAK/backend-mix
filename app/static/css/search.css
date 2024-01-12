@@ -97,6 +97,7 @@
 
 .filters-container {
     padding-left: 3em;
+
 }
 
 @media (min-width: 576px) {
@@ -225,6 +226,7 @@
 
     .custom-filter-width {
         max-width: 400px; /* Example width */
+
     }
 
 

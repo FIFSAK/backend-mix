@@ -63,77 +63,83 @@
         </nav>
     </header>
 </div>
-
+{% verbatim %}
 <!-- MAIN SEARCH -->
-<main class="mb-4">
-    <div class="container-fluid search-div d-flex flex-column justify-content-center align-items-center">
-        <form class="form-search d-flex" action="search.html">
-            <input class="search-input" type="text" placeholder="What do you look for...">
-            <button class="button-search" type="submit">Search</button>
-        </form>
-    </div>
-</main>
-
-<body>
-<!-- Фильтры -->
-<div class="container-fluid bg-color-light">
-    <div class="row border-bottom-gray">
-        <div class="col-12 col-md-3 border-right-gray-md pb-4 border-bottom-gray-sm filters-container custom-filter-width">
-            <div class="d-flex flex-column">
-                <!-- Фильтр по цене -->
-                <div id="price-slider" class="slider"></div>
-                <div class="slider-labels">
-                    <input type="text" id="input-lower" class="input-lower"/>
-                    <input type="text" id="input-upper" class="input-upper"/>
-                </div>
-
-                <!-- Фильтр по размеру с множественным выбором -->
-                <div class="custom-checkboxes">
-                    <p class="border-bottom-gray py-2 my-2 color-dark-gray h-medium-font">Size</p>
-                    <label><input type="checkbox" name="size" value="s"> S</label>
-                    <label><input type="checkbox" name="size" value="m"> M</label>
-                    <label><input type="checkbox" name="size" value="l"> L</label>
-                </div>
-
-                <!-- Фильтр по бренду с чекбоксами -->
-                <div class="custom-checkboxes">
-                    <p class="border-bottom-gray py-2 my-2 color-dark-gray h-medium-font">Brand</p>
-                    <label><input type="checkbox" name="brand" value="brand1"> Brand 1</label>
-                    <label><input type="checkbox" name="brand" value="brand2"> Brand 2</label>
-                    <label><input type="checkbox" name="brand" value="brand3"> Brand 3</label>
-                </div>
-            </div>
-
-            <!-- Фильтр по цвету с чекбоксами -->
-            <div class="custom-checkboxes">
-                <p class="border-bottom-gray py-2 my-2 color-dark-gray h-medium-font">Color</p>
-                <label><input type="checkbox" name="color" value="red"> Red</label>
-                <label><input type="checkbox" name="color" value="blue"> Blue</label>
-                <label><input type="checkbox" name="color" value="green"> Green</label>
-            </div>
-
+<div id="clothes-cards">
+    <main class="mb-4">
+        <div class="container-fluid search-div d-flex flex-column justify-content-center align-items-center">
+            <form class="form-search d-flex" @submit.prevent="searchForm">
+                <input class="search-input" type="text" v-model="searchQuery" placeholder="What do you look for...">
+                <button class="button-search" type="submit">Search</button>
+            </form>
         </div>
-        {% verbatim %}
-        <div class="col-md-8" id="clothes-cards">
-            <div class="row custom-gutter-row">
-                <div class="col-md-4" v-for="cloth in clothes" :key="cloth.id">
-                    <div class="product-card">
-                        <img :src="cloth.image" :alt="cloth.name" class="product-image">
-                        <div class="product-info">
-                            <h3 class="product-title">{{ cloth.name }}</h3>
-                            <!-- Other details -->
-                        </div>
+    </main>
+
+    <!-- Фильтры -->
+
+    <div class="container-fluid bg-color-light">
+        <div class="row border-bottom-gray">
+            <div class="col-12 col-md-3 border-right-gray-md pb-4 border-bottom-gray-sm filters-container custom-filter-width">
+                <div class="d-flex flex-column">
+                    <!-- Фильтр по цене -->
+                    <div id="price-slider" class="slider"></div>
+                    <div class="slider-labels">
+                        <input type="text" id="input-lower" class="input-lower"/>
+                        <input type="text" id="input-upper" class="input-upper"/>
+                    </div>
+                    <div class="custom-checkboxes">
+                        <p class="border-bottom-gray py-2 my-2 color-dark-gray h-medium-font">Сортировать по</p>
+                        <label><input type="radio" name="sort" value="asc" @click="orderType('price')"> убыванию
+                            цены</label>
+                        <label><input type="radio" name="sort" value="dsc" @click="orderType('-price')"> возрастанию
+                            цены</label>
+                        <label><input type="radio" name="sort" value="" @click="orderType('')"> умолчанию</label>
+                    </div>
+                    <!-- Фильтр по размеру с множественным выбором -->
+                    <div class="custom-checkboxes">
+                        <p class="border-bottom-gray py-2 my-2 color-dark-gray h-medium-font">Size</p>
+                        <label v-for="size in ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']" :key="size">
+                            <input type="checkbox" :value="size" @change="updateFilter(size)"> {{ size }}
+                        </label>
+                    </div>
+
+                    <!-- Фильтр по бренду с чекбоксами -->
+                    <div class="custom-checkboxes">
+                        <p class="border-bottom-gray py-2 my-2 color-dark-gray h-medium-font">Brand</p>
+                        <label v-for="brand in ['Gucci', 'Prada', 'test']" :key="brand">
+                            <input type="checkbox" :value="brand" @change="updateFilter(brand)"> {{ brand }}
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Фильтр по цвету с чекбоксами -->
+                <div class="custom-checkboxes">
+                    <p class="border-bottom-gray py-2 my-2 color-dark-gray h-medium-font">Color</p>
+                    <label><input type="checkbox" name="color" value="red"> Red</label>
+                    <label><input type="checkbox" name="color" value="blue"> Blue</label>
+                    <label><input type="checkbox" name="color" value="green"> Green</label>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="row custom-gutter-row">
+                    <div class="col-md-4" v-for="cloth in clothes" :key="cloth.id">
+                        <a :href="`http://127.0.0.1:8000/cart.html?id=${cloth.id}`">
+                            <div class="product-card">
+                                <img :src="cloth.image" :alt="cloth.name" class="product-image">
+                                <div class="product-info">
+                                    <h3 class="product-title">{{ cloth.name }}</h3>
+                                    <button class="btn btn-primary add-to-cart-btn">Добавить в корзину</button>
+                                </div>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
-        {% endverbatim %}
-
     </div>
-
-    <!-- ... Остальная часть страницы ... -->
 </div>
-</div>
+{% endverbatim %}
 
 <script src="../static/app.js"></script>
 
@@ -154,6 +160,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-</body>
 
+
+</body>
 </html>
