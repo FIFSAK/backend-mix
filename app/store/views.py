@@ -25,9 +25,14 @@ class ClothesViewSet(viewsets.ReadOnlyModelViewSet):
         queryset = Clothes.objects.all()
         category_name = self.request.query_params.get('category', None)
         item_id = self.request.query_params.get('id', None)
+        lower_bound_price = self.request.query_params.get('lprice', None)
+        upper_bound_price = self.request.query_params.get('uprice', None)
+
         if item_id:
             queryset = queryset.filter(id=item_id)
-
+        if lower_bound_price or upper_bound_price:
+            queryset = queryset.filter(price__gte=lower_bound_price)
+            queryset = queryset.filter(price__lte=upper_bound_price)
         if category_name:
             type_category = Type.objects.filter(category_name=category_name).first()
 

@@ -3,11 +3,11 @@ var inputLower = document.getElementById('input-lower');
 var inputUpper = document.getElementById('input-upper');
 
 noUiSlider.create(priceSlider, {
-    start: [450, 1000000],
+    start: [0, 100000],
     connect: true,
     range: {
         'min': 0,
-        'max': 1000000
+        'max': 100000
     },
     format: {
         // Форматирование значения из ползунка в текстовый формат
@@ -29,14 +29,16 @@ priceSlider.noUiSlider.on('update', function (values, handle) {
     } else {
         inputLower.value = value;
     }
+    window.vueApp.priceFilter(inputLower.value, inputUpper.value);
 });
 
-// Обработчик ввода в нижнее текстовое поле
 inputLower.addEventListener('change', function () {
     priceSlider.noUiSlider.set([this.value, null]);
+    window.vueApp.priceFilter(this.value, inputUpper.value);
 });
 
 // Обработчик ввода в верхнее текстовое поле
 inputUpper.addEventListener('change', function () {
     priceSlider.noUiSlider.set([null, this.value]);
+    window.vueApp.priceFilter(inputLower.value, this.value);
 });
