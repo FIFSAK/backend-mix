@@ -286,5 +286,41 @@
         background-color: darken(var(--red), 10%);
     }
 
+    .pagination-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px 0;
+    }
+
+    .page-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+    }
+
+    .page-count {
+        font-size: 1.2em;
+    }
+
+    .arrow {
+        border: solid black;
+        border-width: 0 3px 3px 0;
+        display: inline-block;
+        padding: 3px;
+    }
+
+    .left {
+        transform: rotate(135deg);
+    }
+
+    .right {
+        transform: rotate(-45deg);
+    }
+
 
 }

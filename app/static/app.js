@@ -8,6 +8,8 @@ var app = new Vue({
         cartItem: '',
         lower_bound_price: '',
         upper_bound_price: '',
+        page_count: '',
+        currentPage: 1,
     },
 
     methods: {
@@ -36,6 +38,14 @@ var app = new Vue({
             this.upper_bound_price = upper_bound_price
             this.fetchData();
         },
+        changePage(direction) {
+            if (direction === 'next' && this.currentPage < this.page_count) {
+                this.currentPage++;
+            } else if (direction === 'prev' && this.currentPage > 1) {
+                this.currentPage--;
+            }
+            this.fetchData();
+        },
 
         fetchData: function () {
             const params = new URLSearchParams(window.location.search);
@@ -52,16 +62,18 @@ var app = new Vue({
             if (this.searchQuery) {
                 query += "&search=" + this.searchQuery;
             }
-            if (this.upper_bound_price || this.lower_bound_price) {
+            if (this.upper_bound_price && this.lower_bound_price) {
                 query += "&lprice=" + this.lower_bound_price + "&uprice=" + this.upper_bound_price;
             }
+            query += `&page=${this.currentPage}`;
             console.log(query)
             const vm = this;
             axios.get(query)
                 .then(function (response) {
-                    // console.log('API Response:', response);
+                    console.log('API Response:', response);
 
                     vm.clothes = response.data.results;
+                    vm.page_count = Math.ceil(response.data.count/6);
                     // for (i = 0; i < vm.clothes.length; i++) {
                     //     console.log(vm.clothes[i].id)
                     // }
