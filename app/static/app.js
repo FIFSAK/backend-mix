@@ -8,6 +8,12 @@ var app = new Vue({
         cartItem: '',
         lower_bound_price: '',
         upper_bound_price: '',
+        page_count: '',
+        currentPage: 1,
+        maxPrice: '',
+        minPrice: '',
+        sliderInitialized: false,
+
     },
 
     methods: {
@@ -36,12 +42,59 @@ var app = new Vue({
             this.upper_bound_price = upper_bound_price
             this.fetchData();
         },
+        changePage(direction) {
+            if (direction === 'next' && this.currentPage < this.page_count) {
+                this.currentPage++;
+            } else if (direction === 'prev' && this.currentPage > 1) {
+                this.currentPage--;
+            }
+            this.fetchData();
+        },
+        maxMinPrice: function () {
+            const vm = this;
+            axios.get('/api/clothes/')
+                .then(function (response) {
+                    console.log('API Response:', response);
 
+                    let prices = response.data.results.map(item => item.price);
+                    vm.minPrice = Math.min(...prices);
+                    vm.maxPrice = Math.max(...prices);
+
+                    // Initialize or update your slider here
+                    vm.initializeSlider();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        initializeSlider: function () {
+            if (!this.sliderInitialized) {
+                // Initialize the slider
+                noUiSlider.create(priceSlider, {
+                    start: [this.minPrice, this.maxPrice],
+                    connect: true,
+                    range: {
+                        'min': this.minPrice,
+                        'max': this.maxPrice
+                    },
+                    // ... rest of your slider config
+                });
+                this.sliderInitialized = true;
+            } else {
+                // Update the slider
+                priceSlider.noUiSlider.updateOptions({
+                    range: {
+                        'min': this.minPrice,
+                        'max': this.maxPrice
+                    }
+                });
+            }
+        },
         fetchData: function () {
             const params = new URLSearchParams(window.location.search);
             let category = params.get('category') || '';
             let query = '/api/clothes/?category=' + category;
-
+            this.maxMinPrice(query);
             if (this.sortType) {
                 query += "&ordering=" + this.sortType;
             }
@@ -52,16 +105,19 @@ var app = new Vue({
             if (this.searchQuery) {
                 query += "&search=" + this.searchQuery;
             }
-            if (this.upper_bound_price || this.lower_bound_price) {
+            if (this.upper_bound_price && this.lower_bound_price) {
                 query += "&lprice=" + this.lower_bound_price + "&uprice=" + this.upper_bound_price;
             }
+            query += `&page=${this.currentPage}`;
+
             console.log(query)
             const vm = this;
             axios.get(query)
                 .then(function (response) {
-                    // console.log('API Response:', response);
+                    console.log('API Response:', response);
 
                     vm.clothes = response.data.results;
+                    vm.page_count = Math.ceil(response.data.count / 6);
                     // for (i = 0; i < vm.clothes.length; i++) {
                     //     console.log(vm.clothes[i].id)
                     // }
@@ -73,6 +129,7 @@ var app = new Vue({
     },
 
     created: function () {
+        this.maxMinPrice();
         this.fetchData();
     },
 });
