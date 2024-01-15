@@ -10,9 +10,11 @@ var app = new Vue({
         upper_bound_price: '',
         page_count: '',
         currentPage: 1,
+        pageString: '',
         maxPrice: '',
         minPrice: '',
         sliderInitialized: false,
+
 
     },
 
@@ -118,6 +120,13 @@ var app = new Vue({
 
                     vm.clothes = response.data.results;
                     vm.page_count = Math.ceil(response.data.count / 6);
+                    if (vm.page_count === 1) {
+                        vm.pageString = "1"
+                    } else if (vm.page_count === vm.currentPage) {
+                        vm.pageString = vm.currentPage
+                    } else {
+                        vm.pageString = vm.currentPage + "..." + vm.page_count
+                    }
                     // for (i = 0; i < vm.clothes.length; i++) {
                     //     console.log(vm.clothes[i].id)
                     // }
