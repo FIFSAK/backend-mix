@@ -19,7 +19,7 @@
 <body>
 
 <!-- HEADER -->
-<div class="container-fluid header-wrapper sticky-top">
+<div class="container-fluid header-wrapper sticky-top" id="auth">
     <header class=" container-fluid container-lg">
         <nav class="nav-flexbox flex-space-between-custom display-flex-custom flex-center-custom">
             <div class="d-flex align-items-center flex-nowrap">
@@ -52,13 +52,13 @@
                 <!--?                <a class="nav-user-link" href="#">-->
                 <!--?                    &nbsp;LastName-->
                 <!--?                </a>-->
-                <a class="nav-user-link" href="#">
+                <a class="nav-user-link" href="#" @click="login()">
                     &nbsp;LogIn
                 </a>
-                <a class="nav-user-link" href="#">
+                <a class="nav-user-link" href="#" @click="register()">
                     &nbsp;Register
                 </a>
-                <img src="../static/img/user.png" alt="user-icon" width="35" height="35">
+<!--?                <img src="../static/img/user.png" alt="user-icon" width="35" height="35">-->
             </div>
         </nav>
     </header>
@@ -186,7 +186,7 @@
     </div>
 </section>
 
-
+<script src="../static/auth.js"></script>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <!--<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"-->
