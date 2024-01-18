@@ -1,45 +1,43 @@
 new Vue({
     el: '#auth',
     data: {
+        username: '',
+        password: '',
         token: '',
         refresh_token: '',
-
-
     },
     methods: {
-        register: function (name, password) {
+        register() {
             const vm = this;
-            axios.post('api/register/', {body: {name: name, password: password}})
-                .then(function (response) {
+            axios.post('api/register/', {username: vm.username, password: vm.password})
+                .then(response => {
                     console.log('API Response:', response);
-                    if (response.username !== "A user with that username already exists.") {
-                        axios.post('api/token/', {body: {username: name, password: password}})
-                            .then(function (response) {
-                                console.log('API Response:', response);
-                                vm.token = response.access;
-                                vm.refresh_token = response.refresh;
-                            })
-                            .catch(function (error) {
-                                console.log(error);
-                            });
+                    // Successful registration
+                    if (response.data.username !== "A user with that username already exists.") {
+                        console.log("User successfully registered.");
+                        // Optionally, automatically log the user in after registration
+                        vm.login();
+                    } else {
+                        // Handle the case where the username already exists
+                        console.log("A user with that username already exists. Please choose a different username.");
+                        // You can set a flag or message to inform the user that the username is taken
                     }
                 })
-                .catch(function (error) {
+                .catch(error => {
                     console.log(error);
                 });
         },
-        login: function (name, password) {
-            axios.post('api/token/', {body: {username: name, password: password}})
-                .then(function (response) {
+        login() {
+            const vm = this;
+            axios.post('api/token/', {username: vm.username, password: vm.password})
+                .then(response => {
                     console.log('API Response:', response);
-                    vm.token = response.access;
-                    vm.refresh_token = response.refresh;
+                    vm.token = response.data.access;
+                    vm.refresh_token = response.data.refresh;
                 })
-                .catch(function (error) {
+                .catch(error => {
                     console.log(error);
                 });
         }
     },
-
 });
-

@@ -52,13 +52,23 @@
                 <!--?                <a class="nav-user-link" href="#">-->
                 <!--?                    &nbsp;LastName-->
                 <!--?                </a>-->
-                <a class="nav-user-link" href="#" @click="login()">
-                    &nbsp;LogIn
-                </a>
-                <a class="nav-user-link" href="#" @click="register()">
-                    &nbsp;Register
-                </a>
-<!--?                <img src="../static/img/user.png" alt="user-icon" width="35" height="35">-->
+                <!--?                <a class="nav-user-link" href="#" @click="login()">-->
+                <!--?                    &nbsp;LogIn-->
+                <!--?                </a>-->
+                <!--?                <a class="nav-user-link" href="#" @click="register()">-->
+                <!--?                    &nbsp;Register-->
+                <!--?                </a>-->
+                <div class="login-info flex-center-custom display-flex-custom d-none d-md-flex h-medium-font">
+                    <!-- Login/Register Form -->
+                    <form class="nav-hd-link h-medium-font text-nowrap" @submit.prevent="login">
+                        <input type="text" placeholder="Username" v-model="username" required>
+                        <input type="password" placeholder="Password" v-model="password" required>
+                        <button type="button" @click="login">Log In</button>
+                        <button type="button" @click="register">Register</button>
+                    </form>
+                </div>
+
+                <!--?                <img src="../static/img/user.png" alt="user-icon" width="35" height="35">-->
             </div>
         </nav>
     </header>
@@ -86,7 +96,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-4 col-sm-6 mb-3" >
+        <div class="col-md-4 col-sm-6 mb-3">
             <a href="search.html/?category=Pantsuits">
                 <div class="category-item">
                     <img src="../static/img/icons8-blazer-32.png" alt="blazer-icon">
@@ -111,7 +121,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-4 col-sm-6 mb-3" >
+        <div class="col-md-4 col-sm-6 mb-3">
             <a href="search.html/?category=Overalls">
                 <div class="category-item">
                     <img src="../static/img/icons8-overalls-60.png" alt="over-icon" width="32" height="32">
@@ -119,7 +129,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-4 col-sm-6 mb-3" >
+        <div class="col-md-4 col-sm-6 mb-3">
             <a href="search.html/?category=Blazer">
                 <div class="category-item">
                     <img src="../static/img/icons8-blazer-32.png" alt="blazer-icon">
@@ -151,7 +161,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-4 col-sm-6 mb-3" >
+        <div class="col-md-4 col-sm-6 mb-3">
             <a href="search.html/?category=Ironed">
                 <div class="category-item">
                     <img src="../static/img/icons8-ironed-64.png" alt="shirt-icon" width="32" height="32">
