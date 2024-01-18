@@ -6,14 +6,18 @@ from rest_framework import viewsets, filters, permissions, status
 from .serializers import ClothesSerializer, UserSerializer, CartItemSerializer
 from django.contrib.auth.models import User
 
+
 def index(request):
     return render(request, "index.html")
+
 
 def search(request):
     return render(request, "search.html")
 
+
 def itemcart(request):
     return render(request, "cart.html")
+
 
 class ClothesViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ClothesSerializer
@@ -47,8 +51,14 @@ class ClothesViewSet(viewsets.ReadOnlyModelViewSet):
 
 class UserView(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all();
-
     serializer_class = UserSerializer
+
+
+class UserRegister(viewsets.ModelViewSet):
+    serializer_class = UserSerializer
+    queryset = User.objects.all();
+
+
 
 
 class CartItemViewSet(viewsets.ModelViewSet):
