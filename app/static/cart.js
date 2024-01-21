@@ -7,20 +7,25 @@ new Vue({
     methods: {
         addToCart: function (id) {
             let token = localStorage.getItem('userToken');
-
-            axios.post('/api/cartItem/', {
-                clothes: id
-            }, {
-                headers: {
-                    'Authorization': 'Bearer ' + token  // Include the token in the request headers
-                }
-            })
-            .then((response) => {
-                console.log(response)
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+            if (this.selectedSize) {
+                axios.post('/api/cartItem/', {
+                    clothes: id,
+                    size: this.selectedSize
+                }, {
+                    headers: {
+                        'Authorization': 'Bearer ' + token  // Include the token in the request headers
+                    }
+                })
+                    .then((response) => {
+                        console.log(response)
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+            else{
+                alert('chose size')
+            }
         },
         setSize: function (size) {
             this.selectedSize = size;

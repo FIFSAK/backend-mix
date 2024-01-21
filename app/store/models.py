@@ -54,6 +54,7 @@ class CartItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     clothes = models.ForeignKey(Clothes, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
+    size = models.CharField(max_length=100)
 #
 # class Trousers(Clothes):
 #
