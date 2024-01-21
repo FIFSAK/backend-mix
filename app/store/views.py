@@ -18,6 +18,9 @@ def search(request):
 def itemcart(request):
     return render(request, "cart.html")
 
+def userItems(request):
+    return render(request, "userCart.html")
+
 
 class ClothesViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ClothesSerializer

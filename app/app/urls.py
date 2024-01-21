@@ -38,6 +38,7 @@ urlpatterns = [
     path('search.html/', search),
     path('admin/', admin.site.urls),
     path('cart.html/', itemcart),
+    path('userItems.html', userItems),
     # path('clothes/<str:type>', clothes_view),
     path('api/', include(router.urls)),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
