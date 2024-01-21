@@ -25,9 +25,9 @@
 </head>
 
 <body>
-{% verbatim %}
+{%verbatim %}
 <!-- HEADER -->
-<div class="container-fluid header-wrapper sticky-top">
+<div class="container-fluid header-wrapper sticky-top" id="auth">
     <header class=" container-fluid container-lg">
         <nav class="nav-flexbox flex-space-between-custom display-flex-custom flex-center-custom">
             <div class="d-flex align-items-center flex-nowrap">
@@ -53,20 +53,23 @@
                 <a class="nav-hd-link h-medium-font text-nowrap" href="#">
                     <i class="fas fa-shopping-cart fa-lg"></i>&nbsp;&nbsp;CART
                 </a>
-                </a>
-                <!--?                <a class="nav-user-link" href="#">-->
-                <!--?                    &nbsp;FirstName-->
-                <!--?                </a>-->
-                <!--?                <a class="nav-user-link" href="#">-->
-                <!--?                    &nbsp;LastName-->
-                <!--?                </a>-->
-                <a class="nav-user-link">
-                    &nbsp;LogIn
-                </a>
-                <a class="nav-user-link">
-                    &nbsp;Register
-                </a>
-                <img src="../static/img/user.png" alt="user-icon" width="35" height="35">
+                <div class="login-info flex-center-custom display-flex-custom d-none d-md-flex h-medium-font">
+                    <!-- Login/Register Form -->
+                    <form v-if="!isLoggedIn" class="nav-hd-link h-medium-font text-nowrap" @submit.prevent="login">
+                        <input type="text" placeholder="Username" v-model="username" required>
+                        <input type="password" placeholder="Password" v-model="password" required>
+                        <button type="button" @click="login">Log In</button>
+                        <button type="button" @click="register">Register</button>
+                    </form>
+
+                    <!-- Logged In User Info -->
+                    <div v-else class="user-info">
+                        <span>{{ username }}</span>
+                        <button type="button" @click="logout">Log Out</button>
+                    </div>
+                </div>
+
+                <!--?                <img src="../static/img/user.png" alt="user-icon" width="35" height="35">-->
             </div>
         </nav>
     </header>
@@ -93,11 +96,19 @@
                     <div class="col-md-8">
                         <div class="card-body">
                             <h5 class="card-title">{{ cartItem.name }}</h5>
-                            <p class="card-text">Sizes: {{ cartItem.sizes.join(', ') }}</p>
+                            <div class="custom-checkboxes" style="display: flex; align-items: flex-start;">
+                                <p class="color-dark-gray h-medium-font">Size</p>
+                                <div style="display: flex;">
+                                    <label v-for="size in cartItem.sizes" :key="size" class="size-label">
+                                        <input type="radio" name="size" :value="size" @click="setSize(size)">
+                                        {{ size }}
+                                    </label>
+                                </div>
+                            </div>
                             <p class="card-text"><small class="text-muted">Vendor Code: {{ cartItem.vendor_code }}</small></p>
-                            <p class="card-text">Price: ${{ cartItem.price }}</p>
+                            <p class="card-text">Price: {{ cartItem.price }} $</p>
                             <p class="card-text">Available: {{ cartItem.count }} items</p>
-                            <button class="btn btn-primary">Добавить в корзину</button>
+                            <button class="btn btn-primary" @click="addToCart(cartItem.id)">Добавить в корзину</button>
                         </div>
                     </div>
                 </div>
@@ -109,5 +120,6 @@
 
 <script src="../static/cart.js"></script>
 <script src="../static/app.js"></script>
+<script src="../static/auth.js"></script>
 </body>
 </html>

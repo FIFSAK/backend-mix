@@ -25,8 +25,9 @@
 
 <body>
 
+{%verbatim %}
 <!-- HEADER -->
-<div class="container-fluid header-wrapper sticky-top">
+<div class="container-fluid header-wrapper sticky-top" id="auth">
     <header class=" container-fluid container-lg">
         <nav class="nav-flexbox flex-space-between-custom display-flex-custom flex-center-custom">
             <div class="d-flex align-items-center flex-nowrap">
@@ -52,23 +53,28 @@
                 <a class="nav-hd-link h-medium-font text-nowrap" href="#">
                     <i class="fas fa-shopping-cart fa-lg"></i>&nbsp;&nbsp;CART
                 </a>
-<!--?                <a class="nav-user-link" href="#">-->
-<!--?                    &nbsp;FirstName-->
-<!--?                </a>-->
-<!--?                <a class="nav-user-link" href="#">-->
-<!--?                    &nbsp;LastName-->
-<!--?                </a>-->
-                <a class="nav-user-link" href="#">
-                    &nbsp;LogIn
-                </a>
-                <a class="nav-user-link" href="#">
-                    &nbsp;Register
-                </a>
-                <img src="../static/img/user.png" alt="user-icon" width="35" height="35">
+                <div class="login-info flex-center-custom display-flex-custom d-none d-md-flex h-medium-font">
+                    <!-- Login/Register Form -->
+                    <form v-if="!isLoggedIn" class="nav-hd-link h-medium-font text-nowrap" @submit.prevent="login">
+                        <input type="text" placeholder="Username" v-model="username" required>
+                        <input type="password" placeholder="Password" v-model="password" required>
+                        <button type="button" @click="login">Log In</button>
+                        <button type="button" @click="register">Register</button>
+                    </form>
+
+                    <!-- Logged In User Info -->
+                    <div v-else class="user-info">
+                        <span>{{ username }}</span>
+                        <button type="button" @click="logout">Log Out</button>
+                    </div>
+                </div>
+
+                <!--?                <img src="../static/img/user.png" alt="user-icon" width="35" height="35">-->
             </div>
         </nav>
     </header>
 </div>
+{% endverbatim %}
 {% verbatim %}
 <!-- MAIN SEARCH -->
 <div id="clothes-cards">
@@ -159,6 +165,8 @@
 <script src="https://cdn.jsdelivr.net/npm/nouislider/distribute/nouislider.min.js"></script>
 
 <script src="../static/slider.js"></script>
+<script src="../static/auth.js"></script>
+
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

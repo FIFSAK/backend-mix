@@ -2,8 +2,30 @@ new Vue({
     el: '#cart',
     data: {
         cartItem: '',
+        selectedSize: '',
     },
     methods: {
+        addToCart: function (id) {
+            let token = localStorage.getItem('userToken');
+
+            axios.post('/api/cartItem/', {
+                clothes: id
+            }, {
+                headers: {
+                    'Authorization': 'Bearer ' + token  // Include the token in the request headers
+                }
+            })
+            .then((response) => {
+                console.log(response)
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        },
+        setSize: function (size) {
+            this.selectedSize = size;
+            console.log(this.selectedSize)
+        },
         fetchData: function () {
             const params = new URLSearchParams(window.location.search);
             let cartId = params.get('id') || '';
