@@ -1,7 +1,8 @@
-from django.contrib.auth.models import User
-from rest_framework import serializers
-from django.contrib.auth.hashers import make_password
 from store.models import Clothes, CartItem
+from rest_framework import serializers
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
+from rest_framework.exceptions import ValidationError
 
 
 class ClothesSerializer(serializers.ModelSerializer):
@@ -25,10 +26,14 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ("username", "password",)
 
+    def validate_username(self, value):
+        if User.objects.filter(username=value).exists():
+            raise ValidationError("A user with that username already exists.")
+        return value
+
     def create(self, validated_data):
         user = User(
             username=validated_data['username'],
-            # Hash the password
             password=make_password(validated_data['password'])
         )
         user.save()
@@ -36,6 +41,17 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CartItemSerializer(serializers.ModelSerializer):
+    clothes = ClothesSerializer(read_only=True)
+    clothes_id = serializers.IntegerField(write_only=True)
+
     class Meta:
         model = CartItem
         fields = '__all__'
+
+    def create(self, validated_data):
+        clothes_id = validated_data.pop('clothes_id')
+        clothes = Clothes.objects.get(id=clothes_id)
+        cart_item = CartItem.objects.create(clothes=clothes, **validated_data)
+        return cart_item
+
+

@@ -28,3 +28,9 @@
     background-color: #0056b3;
     border-color: #0056b3;
 }
+.size-label {
+    margin-right: 10px; /* Adjust spacing between sizes */
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 10px;
+}

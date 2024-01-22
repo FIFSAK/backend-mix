@@ -85,30 +85,24 @@
         </div>
     </main>
 </div>
-<div id="cart" class="container mt-4">
+<div id="usercart" class="container mt-4">
     <div class="row">
-        <div class="col-12">
-            <div class="card mb-3">
+        <!-- Iterate over each item in userItems -->
+        <div class="col-12 mb-3" v-for="item in userItems" :key="item.id">
+            <div class="card">
                 <div class="row no-gutters">
                     <div class="col-md-4">
-                        <img :src="cartItem.image" class="card-img" alt="Clothes Image">
+                        <img :src="item.clothes.image" class="card-img" alt="Clothes Image">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h5 class="card-title">{{ cartItem.name }}</h5>
-                            <div class="custom-checkboxes" style="display: flex; align-items: flex-start;">
-                                <p class="color-dark-gray h-medium-font">Size</p>
-                                <div style="display: flex;">
-                                    <label v-for="size in cartItem.sizes" :key="size" class="size-label">
-                                        <input type="radio" name="size" :value="size" @click="setSize(size)">
-                                        {{ size }}
-                                    </label>
-                                </div>
-                            </div>
-                            <p class="card-text"><small class="text-muted">Vendor Code: {{ cartItem.vendor_code }}</small></p>
-                            <p class="card-text">Price: {{ cartItem.price }} $</p>
-                            <p class="card-text">Available: {{ cartItem.count }} items</p>
-                            <button class="btn btn-primary" @click="addToCart(cartItem.id)">Добавить в корзину</button>
+                            <h5 class="card-title">{{ item.clothes.name }}</h5>
+                            <!-- Sizes, if applicable -->
+                            <p class="color-dark-gray h-medium-font">Size: {{ item.size}}</p>
+                            <p class="card-text"><small class="text-muted">Vendor Code: {{ item.clothes.vendor_code}}</small>
+                            </p>
+                            <p class="card-text">Price: {{ item.clothes.price }} $</p>
+                            <button type="submit" style="background-color: red" @click="deleteItem(item.id)">delete</button>
                         </div>
                     </div>
                 </div>
@@ -119,6 +113,7 @@
 {% endverbatim %}
 
 <script src="../static/cart.js"></script>
+<script src="../static/userCart.js"></script>
 <script src="../static/app.js"></script>
 <script src="../static/auth.js"></script>
 </body>

@@ -52,6 +52,7 @@ var app = new Vue({
             }
             this.fetchData();
         },
+        
         // maxMinPrice: function () {
         //     const vm = this;
         //     axios.get('/api/clothes/')
@@ -96,7 +97,7 @@ var app = new Vue({
             const params = new URLSearchParams(window.location.search);
             let category = params.get('category') || '';
             let query = '/api/clothes/?category=' + category;
-            this.maxMinPrice(query);
+            // this.maxMinPrice(query);
             if (this.sortType) {
                 query += "&ordering=" + this.sortType;
             }

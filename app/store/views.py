@@ -18,6 +18,9 @@ def search(request):
 def itemcart(request):
     return render(request, "cart.html")
 
+def userItems(request):
+    return render(request, "userCart.html")
+
 
 class ClothesViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ClothesSerializer
@@ -66,12 +69,12 @@ class CartItemViewSet(viewsets.ModelViewSet):
     serializer_class = CartItemSerializer
 
     def get_queryset(self):
-        return CartItem.objects.filter(user=self.request.user)
+        return CartItem.objects.filter(user=self.request.user).select_related('clothes')
 
     def create(self, *args, **kwargs):
-        # Create a mutable copy of request.data
         data = self.request.data.copy()
-        clothes_id = data.get('clothes')
+        clothes_id = data.get('clothes_id')  # Изменено здесь
+        size = data.get('size')
         try:
             clothes = Clothes.objects.get(id=clothes_id)
         except Clothes.DoesNotExist:
@@ -85,7 +88,7 @@ class CartItemViewSet(viewsets.ModelViewSet):
         data['user'] = self.request.user.pk
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
-        if existing_item:
+        if existing_item and size == existing_item.size:
             existing_item.quantity += 1
             existing_item.save(update_fields=['quantity'])
         else:
