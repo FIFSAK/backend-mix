@@ -9,7 +9,7 @@ new Vue({
             let token = localStorage.getItem('userToken');
             if (this.selectedSize) {
                 axios.post('/api/cartItem/', {
-                    clothes: id,
+                    clothes_id: id,  // Изменено с 'clothes' на 'clothes_id'
                     size: this.selectedSize
                 }, {
                     headers: {
@@ -22,9 +22,8 @@ new Vue({
                     .catch(function (error) {
                         console.log(error);
                     });
-            }
-            else{
-                alert('chose size')
+            } else {
+                alert('Please choose a size')  // Изменено сообщение об ошибке для ясности
             }
         },
         setSize: function (size) {

@@ -11,7 +11,7 @@ var auth = new Vue({
     methods: {
         register() {
             const vm = this;
-            axios.post('api/register/', {username: vm.username, password: vm.password})
+            axios.post('http://127.0.0.1:8000/api/register/', {username: vm.username, password: vm.password})
                 .then(response => {
                     console.log('API Response:', response);
                     console.log("User successfully registered.");
@@ -30,7 +30,7 @@ var auth = new Vue({
         },
         login() {
             const vm = this;
-            axios.post('api/token/', {username: vm.username, password: vm.password})
+            axios.post('http://127.0.0.1:8000/api/token/', {username: vm.username, password: vm.password})
                 .then(response => {
                     console.log('API Response:', response);
                     vm.token = response.data.access;
@@ -63,4 +63,3 @@ var auth = new Vue({
     }
 
 });
-window.vueApp= auth

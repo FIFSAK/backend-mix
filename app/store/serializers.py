@@ -41,6 +41,17 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CartItemSerializer(serializers.ModelSerializer):
+    clothes = ClothesSerializer(read_only=True)
+    clothes_id = serializers.IntegerField(write_only=True)
+
     class Meta:
         model = CartItem
         fields = '__all__'
+
+    def create(self, validated_data):
+        clothes_id = validated_data.pop('clothes_id')
+        clothes = Clothes.objects.get(id=clothes_id)
+        cart_item = CartItem.objects.create(clothes=clothes, **validated_data)
+        return cart_item
+
+

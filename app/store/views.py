@@ -69,12 +69,11 @@ class CartItemViewSet(viewsets.ModelViewSet):
     serializer_class = CartItemSerializer
 
     def get_queryset(self):
-        return CartItem.objects.filter(user=self.request.user)
+        return CartItem.objects.filter(user=self.request.user).select_related('clothes')
 
     def create(self, *args, **kwargs):
-        # Create a mutable copy of request.data
         data = self.request.data.copy()
-        clothes_id = data.get('clothes')
+        clothes_id = data.get('clothes_id')  # Изменено здесь
         size = data.get('size')
         try:
             clothes = Clothes.objects.get(id=clothes_id)
